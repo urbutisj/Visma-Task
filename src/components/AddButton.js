@@ -22,6 +22,9 @@ const AddButtonStyle = styled.button`
   border-radius: 1rem;
   margin-bottom: 2rem;
   cursor: pointer;
+  @media screen and (max-width: 990px) {
+    margin: 0 auto 2rem;
+  }
 `;
 
 export default AddButton;

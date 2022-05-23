@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import AddButton from "./AddButton";
-import AddWindow from "./AddWindow";
-import EditWindow from "./EditWindow";
+import AddScreen from "./screens/AddScreen";
+import EditScreen from "./screens/EditScreen";
 import CustomersGrid from "./CustomersGrid";
 
 const Dashboard = () => {
@@ -40,14 +40,14 @@ const Dashboard = () => {
         </>
       )}
       {isAdding && (
-        <AddWindow
+        <AddScreen
           customers={customers}
           setCustomers={setCustomers}
           setIsAdding={setIsAdding}
         />
       )}
       {isEditing && (
-        <EditWindow
+        <EditScreen
           customers={customers}
           selectedCustomer={selectedCustomer}
           setCustomers={setCustomers}

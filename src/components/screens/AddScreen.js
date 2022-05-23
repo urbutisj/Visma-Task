@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useState, useRef, useEffect } from "react";
 import Geocode from "react-geocode";
-const EditWindow = ({
-  customers,
-  selectedCustomer,
-  setCustomers,
-  setIsEditing,
-}) => {
-  const id = selectedCustomer.id;
-  const [fullName, setFullName] = useState(selectedCustomer.fullName);
-  const [email, setEmail] = useState(selectedCustomer.email);
-  const [street, setStreet] = useState(selectedCustomer.address.street);
-  const [houseNo, setHouseNo] = useState(selectedCustomer.address.houseNo);
-  const [city, setCity] = useState(selectedCustomer.address.city);
-  const [zipCode, setZipCode] = useState(selectedCustomer.address.zipCode);
-  const [latitude, setLatitude] = useState(selectedCustomer.address.latitude);
-  const [longitude, setLongitude] = useState(
-    selectedCustomer.address.longitude
-  );
+
+const AddScreen = ({ customers, setCustomers, setIsAdding }) => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [street, setStreet] = useState("");
+  const [houseNo, setHouseNo] = useState("");
+  const [city, setCity] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+
+  const textInput = useRef(null);
 
   Geocode.setApiKey(process.env.REACT_APP_GOOGLE_GEOCODING_API);
+
+  useEffect(() => {
+    textInput.current.focus();
+  }, []);
 
   useEffect(() => {
     const getCoordinates = async () => {
@@ -40,13 +38,14 @@ const EditWindow = ({
     }
   });
 
-  const updateHandler = (e) => {
+  const addHandler = async (e) => {
     e.preventDefault();
-
     if (!fullName || !email || !street || !houseNo || !city || !zipCode) {
       return alert("Fill Empty Inputs");
     }
-    const customer = {
+
+    const id = customers.length + 1;
+    const newCustomer = {
       id,
       fullName,
       email,
@@ -60,28 +59,22 @@ const EditWindow = ({
       },
     };
 
-    for (let i = 0; i < customers.length; i++) {
-      if (customers[i].id === id) {
-        customers.splice(i, 1, customer);
-        break;
-      }
-    }
-
-    setCustomers(customers);
+    customers.push(newCustomer);
     localStorage.setItem("customers", JSON.stringify(customers));
-    if (latitude > 0) {
-      setIsEditing(false);
-    }
+    setCustomers(customers);
+    setIsAdding(false);
   };
+
   return (
     <div className="add--container">
-      <h2>Edit customer</h2>
-      <form onSubmit={updateHandler}>
+      <h2>Add new customer</h2>
+      <form onSubmit={addHandler}>
         <div className="inner--form--row">
           <label htmlFor="fullName">Full Name:</label>
           <input
             id="fullName"
             type="text"
+            ref={textInput}
             name="fullName"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
@@ -137,17 +130,16 @@ const EditWindow = ({
             onChange={(e) => setZipCode(e.target.value)}
           />
         </div>
-        <p>Latitude: {latitude}</p>
-        <p>Longitude: {longitude}</p>
+
         <div className="actions--row">
-          <button className="update--btn" type="submit" value="Update">
-            Update
+          <button className="add--btn" type="submit" value="Add">
+            Add
           </button>
           <button
             className="cancel--btn"
             type="button"
             value="Cancel"
-            onClick={() => setIsEditing(false)}
+            onClick={() => setIsAdding(false)}
           >
             Cancel
           </button>
@@ -156,5 +148,4 @@ const EditWindow = ({
     </div>
   );
 };
-
-export default EditWindow;
+export default AddScreen;

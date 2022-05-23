@@ -17,10 +17,19 @@ const HeaderContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 20px 40px;
+  @media screen and (max-width: 990px) {
+    flex-direction: column;
+    h1 {
+      font-size: 1.2rem;
+    }
+  }
   img {
     width: 150px;
     height: 40px;
     object-fit: cover;
+    @media screen and (max-width: 990px) {
+      margin-bottom: 1rem;
+    }
   }
 `;
 
