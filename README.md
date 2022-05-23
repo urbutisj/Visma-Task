@@ -2,7 +2,7 @@
 
 ## Customers Management App
 
-![App Screenshot](images/DeveloperTaskScreenshot.png)
+![App Screenshot](src/images/DeveloperTaskScreenshot.png)
 
 To get a local copy up and running follow these simple steps.
 
